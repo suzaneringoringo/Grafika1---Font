@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -60,17 +61,59 @@ int main() {
 	FILE *charmap;
 
 	// menerima string untuk ditulis ulang
+	unsigned int len_max = 128;
+  unsigned int current_size = 0;   
+  char *pStr = malloc(len_max);
+  current_size = len_max;
+
+	printf("\nEnter a very very very long String value:");
+
+	int length = 0;
+  if(pStr != NULL) {
+		int c = EOF;
+		unsigned int i =0;
+    //accept user input until hit enter or end of file
+		while (( c = getchar() ) != '\n') {
+			pStr[i++]=(char)c;
+			length++;
+			//if i reached maximize size then realloc size
+			if(i == current_size) {
+				current_size = i+len_max;
+				pStr = realloc(pStr, current_size);
+			}
+		}
+		pStr[i] = '\0';
+		printf("\nLong String value: %s \n\n",pStr);
+  }
 
 	// Figure out where in memory to put the pixel
-	int current_y = 100; //y awal untuk karakter sementara
-	int current_x = 100; //x awal untuk karakter sementara
-	for (int i = 0; i < 2; i++) {
+	int first_y = 100; //y awal;
+	int first_x = 100;
+	int current_y = first_y; //y untuk karakter sementara
+	int current_x = first_x; //x untuk karakter sementara
+	for (int i = 0; i < length; i++) {
 		
 		//baca map untuk pixel karakter
-		if (i == 0) {
+		if (pStr[i] == 'J') {
 			charmap = fopen("J.txt", "r");
-		} else {
+		} else  if (pStr[i] == 'K') {
+			charmap = fopen("K.txt", "r");
+		} else  if (pStr[i] == 'L') {
+			charmap = fopen("L.txt", "r");
+		} else  if (pStr[i] == 'M') {
 			charmap = fopen("M.txt", "r");
+		} else  if (pStr[i] == 'N') {
+			charmap = fopen("N.txt", "r");
+		} else  if (pStr[i] == 'O') {
+			charmap = fopen("O.txt", "r");
+		} else  if (pStr[i] == 'P') {
+			charmap = fopen("P.txt", "r");
+		}
+		else  if (pStr[i] == 'Q') {
+			charmap = fopen("Q.txt", "r");
+		}
+		else  if (pStr[i] == 'R') {
+			charmap = fopen("R.txt", "r");
 		}
 		
 		for (int i = 0; i < charheight; i++) {
@@ -79,6 +122,7 @@ int main() {
 		fclose;
 		
 		//menulis ke framebuffer
+		int max_length = (int)(vinfo.xres);
 		for (y = current_y; y < current_y+charheight; y++) {
 			for (x = current_x; x < current_x+charlength; x++) {
 				location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
@@ -99,11 +143,18 @@ int main() {
 				}
 			}
 		}
-		current_x += 60;
+		if (current_x > max_length-first_x-charlength) {
+			current_y += 100;
+			current_x = 100;
+		} else {
+			current_x += 60;
+		}
 	}
 
 	munmap(fbp, screensize);
 
+	free(pStr);
+	pStr = NULL;
 	close(fbfd);
 	
 	return 0;
