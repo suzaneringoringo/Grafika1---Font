@@ -57,62 +57,50 @@ int main() {
 	for (int i=0; i<charheight; i++)
 		pixelmap[i] = (char *)malloc(charlength * sizeof(char));
 	
-	FILE *charmap = fopen("J.txt", "r");
+	FILE *charmap;
 
-	for (int i = 0; i < charheight; i++) {
-		fscanf (charmap, "%s", pixelmap[i]);
-	}
-
-	fclose;
+	// menerima string untuk ditulis ulang
 
 	// Figure out where in memory to put the pixel
-	for (y = 100; y < 160; y++)
-		for (x = 100; x < 160; x++) {
-			location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
-					(y+vinfo.yoffset) * finfo.line_length;
+	int current_y = 100; //y awal untuk karakter sementara
+	int current_x = 100; //x awal untuk karakter sementara
+	for (int i = 0; i < 2; i++) {
+		
+		//baca map untuk pixel karakter
+		if (i == 0) {
+			charmap = fopen("J.txt", "r");
+		} else {
+			charmap = fopen("M.txt", "r");
+		}
+		
+		for (int i = 0; i < charheight; i++) {
+			fscanf (charmap, "%s", pixelmap[i]);
+		}
+		fclose;
+		
+		//menulis ke framebuffer
+		for (y = current_y; y < current_y+charheight; y++) {
+			for (x = current_x; x < current_x+charlength; x++) {
+				location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+						(y+vinfo.yoffset) * finfo.line_length;
 
-			if (vinfo.bits_per_pixel == 32) {
-				if (pixelmap[y-100][x-100] == '*') {
-					*(fbp + location) = 255;        // Some blue
-					*(fbp + location + 1) = 255;     // A little green
-					*(fbp + location + 2) = 255;    // A lot of red
-					*(fbp + location + 3) = 0;      // No transparency
-				} else {
-					*(fbp + location) = 0;        // Some blue
-					*(fbp + location + 1) = 0;     // A little green
-					*(fbp + location + 2) = 0;    // A lot of red
-					*(fbp + location + 3) = 0;      // No transparency
+				if (vinfo.bits_per_pixel == 32) {
+					if (pixelmap[y-current_y][x-current_x] == '*') {
+						*(fbp + location) = 255;        // putih
+						*(fbp + location + 1) = 255;     // putih
+						*(fbp + location + 2) = 255;    // putih
+						*(fbp + location + 3) = 0;      // No transparency
+					} else {
+						*(fbp + location) = 0;        // hitam
+						*(fbp + location + 1) = 0;     // hitam
+						*(fbp + location + 2) = 0;    // hitam
+						*(fbp + location + 3) = 0;      // No transparency
+					}
 				}
 			}
 		}
-	
-	charmap = fopen("M.txt", "r");
-
-	for (int i = 0; i < charheight; i++) {
-		fscanf (charmap, "%s", pixelmap[i]);
+		current_x += 60;
 	}
-
-	for (y = 100; y < 160; y++)
-		for (x = 200; x < 260; x++) {
-			location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
-					(y+vinfo.yoffset) * finfo.line_length;
-
-			if (vinfo.bits_per_pixel == 32) {
-				if (pixelmap[y-100][x-200] == '*') {
-					*(fbp + location) = 255;        // Some blue
-					*(fbp + location + 1) = 255;     // A little green
-					*(fbp + location + 2) = 255;    // A lot of red
-					*(fbp + location + 3) = 0;      // No transparency
-				} else {
-					*(fbp + location) = 0;        // Some blue
-					*(fbp + location + 1) = 0;     // A little green
-					*(fbp + location + 2) = 0;    // A lot of red
-					*(fbp + location + 3) = 0;      // No transparency
-				}
-			}
-		}
-	
-	fclose;
 
 	munmap(fbp, screensize);
 
