@@ -9,19 +9,20 @@
 
 int main() {
 	int fbfd = 0;
-  struct fb_var_screeninfo vinfo;
+  	struct fb_var_screeninfo vinfo;
 	struct fb_fix_screeninfo finfo;
-  long int screensize = 0;
-  char *fbp = 0;
-  int x = 0, y = 0;
-  long int location = 0;
+	long int screensize = 0;
+  	char *fbp = 0;
+  	int x = 0, y = 0;
+  	long int location = 0;
 
-  // Open the file for reading and writing
-  fbfd = open("/dev/fb0", O_RDWR);
-  if (fbfd == -1) {
-  	perror("Error: cannot open framebuffer device");
+  	// Open the file for reading and writing
+  	fbfd = open("/dev/fb0", O_RDWR);
+  	if (fbfd == -1) {
+  		perror("Error: cannot open framebuffer device");
 		exit(1);
 	}
+	
 	printf("The framebuffer device was opened successfully.\n");
 
 	// Get fixed screen information
@@ -62,20 +63,22 @@ int main() {
 
 	// menerima string untuk ditulis ulang
 	unsigned int len_max = 128;
-  unsigned int current_size = 0;   
-  char *pStr = malloc(len_max);
-  current_size = len_max;
+  	unsigned int current_size = 0;   
+  	char *pStr = malloc(len_max);
+  	current_size = len_max;
 
 	printf("\nEnter a very very very long String value:");
 
 	int length = 0;
-  if(pStr != NULL) {
+  	if(pStr != NULL) {
 		int c = EOF;
 		unsigned int i =0;
-    //accept user input until hit enter or end of file
+    	
+    	//accept user input until hit enter or end of file
 		while (( c = getchar() ) != '\n') {
 			pStr[i++]=(char)c;
 			length++;
+			
 			//if i reached maximize size then realloc size
 			if(i == current_size) {
 				current_size = i+len_max;
@@ -84,7 +87,7 @@ int main() {
 		}
 		pStr[i] = '\0';
 		printf("\nLong String value: %s \n\n",pStr);
-  }
+  	}
 
 	// Figure out where in memory to put the pixel
 	int first_y = 100; //y awal;
@@ -94,7 +97,25 @@ int main() {
 	for (int i = 0; i < length; i++) {
 		
 		//baca map untuk pixel karakter
-		if (pStr[i] == 'J') {
+		if (pStr[i] == 'A') {
+			charmap = fopen("A.txt", "r");
+		} else  if (pStr[i] == 'B') {
+			charmap = fopen("B.txt", "r");
+		} else  if (pStr[i] == 'C') {
+			charmap = fopen("C.txt", "r");
+		} else  if (pStr[i] == 'D') {
+			charmap = fopen("D.txt", "r");
+		} else  if (pStr[i] == 'E') {
+			charmap = fopen("E.txt", "r");
+		} else  if (pStr[i] == 'F') {
+			charmap = fopen("F.txt", "r");
+		} else  if (pStr[i] == 'G') {
+			charmap = fopen("G.txt", "r");
+		} else  if (pStr[i] == 'H') {
+			charmap = fopen("H.txt", "r");
+		} else  if (pStr[i] == 'I') {
+			charmap = fopen("I.txt", "r");
+		} else  if (pStr[i] == 'J') {
 			charmap = fopen("J.txt", "r");
 		} else  if (pStr[i] == 'K') {
 			charmap = fopen("K.txt", "r");
@@ -108,12 +129,12 @@ int main() {
 			charmap = fopen("O.txt", "r");
 		} else  if (pStr[i] == 'P') {
 			charmap = fopen("P.txt", "r");
-		}
-		else  if (pStr[i] == 'Q') {
+		} else  if (pStr[i] == 'Q') {
 			charmap = fopen("Q.txt", "r");
-		}
-		else  if (pStr[i] == 'R') {
+		} else  if (pStr[i] == 'R') {
 			charmap = fopen("R.txt", "r");
+		} else  if (pStr[i] == ' ') {
+			charmap = fopen("Spasi.txt", "r");
 		}
 		
 		for (int i = 0; i < charheight; i++) {
