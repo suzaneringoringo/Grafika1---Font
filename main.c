@@ -133,6 +133,22 @@ int main() {
 			charmap = fopen("Q.txt", "r");
 		} else  if (pStr[i] == 'R') {
 			charmap = fopen("R.txt", "r");
+		} else  if (pStr[i] == 'S') {
+			charmap = fopen("S.txt", "r");
+		} else  if (pStr[i] == 'T') {
+			charmap = fopen("T.txt", "r");
+		} else  if (pStr[i] == 'U') {
+			charmap = fopen("U.txt", "r");
+		} else  if (pStr[i] == 'V') {
+			charmap = fopen("V.txt", "r");
+		} else  if (pStr[i] == 'W') {
+			charmap = fopen("W.txt", "r");
+		} else  if (pStr[i] == 'X') {
+			charmap = fopen("X.txt", "r");
+		} else  if (pStr[i] == 'Y') {
+			charmap = fopen("Y.txt", "r");
+		} else  if (pStr[i] == 'Z') {
+			charmap = fopen("Z.txt", "r");
 		} else  if (pStr[i] == ' ') {
 			charmap = fopen("Spasi.txt", "r");
 		}
@@ -150,7 +166,7 @@ int main() {
 						(y+vinfo.yoffset) * finfo.line_length;
 
 				if (vinfo.bits_per_pixel == 32) {
-					if (pixelmap[y-current_y][x-current_x] == '*') {
+					if ((pixelmap[y-current_y][x-current_x] == '*') || (pixelmap[y-current_y][x-current_x] == '1')) {
 						*(fbp + location) = 255;        // putih
 						*(fbp + location + 1) = 255;     // putih
 						*(fbp + location + 2) = 255;    // putih
