@@ -87,7 +87,19 @@ int main() {
 		}
 		pStr[i] = '\0';
 		printf("\nLong String value: %s \n\n",pStr);
-  	}
+  }
+
+  //menghitamkan layar
+	for (y = 0; y < vinfo.yres; y++) {
+		for (x = 0; x < vinfo.xres; x++) {
+			location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+					(y+vinfo.yoffset) * finfo.line_length;
+			*(fbp + location) = 0;        // hitam
+			*(fbp + location + 1) = 0;     // hitam
+			*(fbp + location + 2) = 0;    // hitam
+			*(fbp + location + 3) = 0;      // No transparency
+		}
+	}
 
 	// Figure out where in memory to put the pixel
 	int first_y = 100; //y awal;
@@ -157,7 +169,7 @@ int main() {
 			fscanf (charmap, "%s", pixelmap[i]);
 		}
 		fclose;
-		
+
 		//menulis ke framebuffer
 		int max_length = (int)(vinfo.xres);
 		for (y = current_y; y < current_y+charheight; y++) {
@@ -166,7 +178,7 @@ int main() {
 						(y+vinfo.yoffset) * finfo.line_length;
 
 				if (vinfo.bits_per_pixel == 32) {
-					if ((pixelmap[y-current_y][x-current_x] == '*') || (pixelmap[y-current_y][x-current_x] == '1')) {
+					if (pixelmap[y-current_y][x-current_x] == '*') {
 						*(fbp + location) = 255;        // putih
 						*(fbp + location + 1) = 255;     // putih
 						*(fbp + location + 2) = 255;    // putih
